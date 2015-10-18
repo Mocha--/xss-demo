@@ -1,5 +1,4 @@
 var express = require('express')
-// /var Base64 = require('js-base64').Base64;
 var mongoose = require('mongoose')
 var bodyParser = require("body-parser")
 var mustacheExpress = require('mustache-express');
