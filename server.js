@@ -27,6 +27,10 @@ server.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html')
 })
 
+server.get('/login', function(req, res) {
+    res.sendFile(__dirname + '/login.html')
+})
+
 server.get('/list', function(req, res) {
     res.set('X-XSS-Protection', 0)
     res.render('list', {
@@ -36,10 +40,33 @@ server.get('/list', function(req, res) {
 })
 
 server.post('/login', function(req, res) {
-	console.log(req.body)
-    res.redirect('/list?username=' + req.body.username)
+    User.findOne({
+        "username": req.body.username,
+        "password": req.body.password
+    }, function(err, user) {
+        if(err) {
+            console.log(err)
+        } else if(user) {
+            console.log(user)
+            res.redirect('/list?username=' + req.body.username)
+        } else {
+            res.redirect('/login')
+        }
+    })
 })
 
-server.listen(3000, function() {
-    console.log('listening 3000')
+server.post('/register', function(req, res) {
+    var user = new User(req.body)
+    console.log(user)
+    user.save(function(err) {
+        if(err) {
+            console.log(err)
+        } else {
+            res.redirect('/login')
+        }
+    })
+})
+
+server.listen(8000, function() {
+    console.log('listening 8000')
 })
