@@ -36,6 +36,22 @@ server.get('/login', function(req, res) {
     res.sendFile(__dirname + '/login.html')
 })
 
+server.use('/list', function(req, res, next) {
+    if (req.cookies.xssdemo) {
+        var username = Base64.decode(req.cookies.xssdemo)
+        User.findOne({
+            username: username
+        }, function(err, user) {
+            if (user) {
+                req.user = user
+                next()
+            } else {
+                res.redirect('/login')
+            }
+        })
+    }
+})
+
 server.get('/list', function(req, res) {
     res.set('X-XSS-Protection', 0)
     User.find({}, function(err, users) {
@@ -62,13 +78,13 @@ server.post('/login', function(req, res) {
             // check if client sent cookie
             var cookie = req.cookies.cookieName;
             if (cookie === undefined) {
-                var str = "";
-                for (var i = 0; i < 10; i++) {
-                    str += req.body.username
-                }
+                var str = req.body.username;
+                // for (var i = 0; i < 10; i++) {
+                //     str += req.body.username
+                // }
                 // no: set a new cookie
                 encodedCookie = Base64.encode(str);
-                res.cookie('cookieName', encodedCookie, {
+                res.cookie('xssdemo', encodedCookie, {
                     maxAge: 900000,
                     httpOnly: true
                 });
