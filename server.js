@@ -36,6 +36,11 @@ server.get('/login', function(req, res) {
     res.sendFile(__dirname + '/login.html')
 })
 
+server.get('/logout', function(req, res) {
+    res.clearCookie('xssdemo');
+    res.redirect('/login')
+})
+
 server.use('/list', function(req, res, next) {
     if (req.cookies.xssdemo) {
         var username = Base64.decode(req.cookies.xssdemo)
