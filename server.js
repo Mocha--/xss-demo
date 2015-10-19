@@ -49,6 +49,8 @@ server.use('/list', function(req, res, next) {
                 res.redirect('/login')
             }
         })
+    } else {
+        res.redirect('/login')
     }
 })
 
@@ -60,6 +62,7 @@ server.get('/list', function(req, res) {
         } else if (users) {
             res.render('list', {
                 username: req.query.username,
+                phone: req.user.phone,
                 users: users
             })
         }
