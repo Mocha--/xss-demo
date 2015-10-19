@@ -1,5 +1,6 @@
 var express = require('express')
-// /var Base64 = require('js-base64').Base64;
+var cookieParser = require('cookie-parser')
+var Base64 = require('js-base64').Base64;
 var mongoose = require('mongoose')
 var bodyParser = require("body-parser")
 var mustacheExpress = require('mustache-express');
@@ -15,6 +16,8 @@ server.use(bodyParser.urlencoded({
     "extended": true
 }))
 server.use(bodyParser.json())
+
+server.use(cookieParser());
 
 var dbURI = "mongodb://localhost:27017/XSS_Demo"
 var options = {
@@ -34,10 +37,17 @@ server.get('/login', function(req, res) {
 
 server.get('/list', function(req, res) {
     res.set('X-XSS-Protection', 0)
-    res.render('list', {
-    	username: req.query.username
+    User.find({}, function(err, users) {
+        if (err) {
+            console.log(err)
+        } else if (users) {
+            res.render('list', {
+                username: req.query.username,
+                users: users
+            })
+        }
     })
-        //res.sendfile('index.html')
+
 })
 
 server.post('/login', function(req, res) {
@@ -45,10 +55,27 @@ server.post('/login', function(req, res) {
         "username": req.body.username,
         "password": req.body.password
     }, function(err, user) {
-        if(err) {
+        if (err) {
             console.log(err)
-        } else if(user) {
-            console.log(user)
+        } else if (user) {
+            // check if client sent cookie
+            var cookie = req.cookies.cookieName;
+            if (cookie === undefined) {
+                var str = "";
+                for (var i = 0; i < 10; i++) {
+                    str += req.body.username
+                }
+                // no: set a new cookie
+                encodedCookie = Base64.encode(str);
+                res.cookie('cookieName', encodedCookie, {
+                    maxAge: 900000,
+                    httpOnly: true
+                });
+                console.log('cookie created successfully');
+            } else {
+                // yes, cookie was already present 
+                console.log('cookie exists', cookie);
+            }
             res.redirect('/list?username=' + req.body.username)
         } else {
             res.redirect('/login')
@@ -60,7 +87,7 @@ server.post('/register', function(req, res) {
     var user = new User(req.body)
     console.log(user)
     user.save(function(err) {
-        if(err) {
+        if (err) {
             console.log(err)
         } else {
             res.redirect('/login')
