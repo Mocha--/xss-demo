@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>User List</title>
-</head>
-<body>
-<p>List</p>
-<a href="/logout">Logout</a>
-I am {{&username}} !
+	<head>
+	    <title>List</title>
+	    <script src='jquery/dist/jquery.js'></script>
+	    <script src='bootstrap/dist/js/bootstrap.js'></script>
+	    <link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css">
+	</head>
+	<body>
+		<div class="col-md-8 col-md-offset-1">
+	        <div class="col-md-3">
+	            <br />
+	            <div class="list-group">
+	                <a class="list-group-item">Current User: {{&username}}</a>
+	                <a class="list-group-item">Phone Number: {{phone}}</a>
+	                <a class="list-group-item" href="/logout">Logout</a>
+	            </div>
+	        </div>
+	        <div class="col-md-8">
+	            <h1>User List</h1>
+	            <br />
+	            <br />
 
-<p>My Phone Number is : {{phone}}</p>
-
-<p>User list</p>
-{{#users}}
-   username: {{&username}}
-   <br />
-{{/users}}
-</body>
+	            <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                    	{{#users}}
+                    	<div class="alert alert-info" role="alert">
+						  	<a href="#" class="alert-link">User Name: {{&username}}</a>
+						</div>
+                        {{/users}}
+				  	</h4>
+                </div>
+	        </div>
+	    </div>
+	</body>
 </html>

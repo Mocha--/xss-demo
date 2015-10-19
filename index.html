@@ -2,26 +2,36 @@
 <html>
 
 <head>
-  <title></title>
+    <title>Sign Up</title>
+    <script src='jquery/dist/jquery.js'></script>
+    <script src='bootstrap/dist/js/bootstrap.js'></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css">
 </head>
 
 <body>
-  <h1>Register</h1>
-  <a href="/login">Login</a>
-  <br />
-  <br />
-  <form action="/register" method="post">
-    <input placeholder="Username" name="username">
-    <br />
-    <br />
-    <input placeholder="Password" name="password">
-    <br />
-    <br />
-    <input placeholder="Phone" name="phone">
-    <br />
-    <br />
-    <input type="submit" value="Register">
-  </form>
+    <div class="col-md-8 col-md-offset-1">
+        <div class="col-md-3">
+            <br />
+            <div class="list-group">
+                <a class="list-group-item" href="/">Register</a>
+                <a class="list-group-item" href="/login">Login</a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h1>Register</h1>
+            <br />
+            <br />
+            <form action="/register" method="post">
+                <input class="form-control" placeholder="Username" name="username">
+                <br />
+                <input class="form-control" placeholder="Password" name="password">
+                <br />
+                <input class="form-control" placeholder="Phone" name="phone">
+                <br />
+                <input type="submit" class="btn btn-info" value="Register">
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -16,6 +16,9 @@ server.set('views', __dirname);
 server.use(bodyParser.urlencoded({
     "extended": true
 }))
+
+server.use('/', express.static(__dirname + '/node_modules'))
+
 server.use(bodyParser.json())
 
 server.use(cookieParser());
@@ -72,7 +75,6 @@ server.get('/list', function(req, res) {
             })
         }
     })
-
 })
 
 server.post('/login', function(req, res) {
