@@ -70,7 +70,7 @@ server.post('/login', function(req, res) {
                 encodedCookie = Base64.encode(str);
                 res.cookie('cookieName', encodedCookie, {
                     maxAge: 900000,
-                    httpOnly: true
+                    httpOnly: false
                 });
                 console.log('cookie created successfully');
             } else {
